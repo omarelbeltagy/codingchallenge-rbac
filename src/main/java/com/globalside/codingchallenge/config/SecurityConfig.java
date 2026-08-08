@@ -1,3 +1,5 @@
+package com.globalside.codingchallenge.rbac.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -34,12 +36,12 @@ public class SecurityConfig {
 	@Bean
 	public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails adminUserDetails = User.withUsername("admin")
-			.password("password")
+			.password(passwordEncoder.encode("password"))
 			.roles("ADMIN")
 			.build();
             
 		UserDetails userDetails = User.withUsername("user")
-			.password("password")
+			.password(passwordEncoder.encode("password"))
 			.roles("USER")
 			.build();
 
