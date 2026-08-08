@@ -1,5 +1,6 @@
 package com.globalside.codingchallenge.rbac.config;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -26,7 +27,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/products").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/products").hasRole("USER")
 				.anyRequest().authenticated()
 			)
 			.httpBasic(Customizer.withDefaults());
