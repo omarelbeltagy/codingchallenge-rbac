@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -17,6 +18,7 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    //Correct cases
     @Test
     @WithMockUser(roles = "USER")
     public void requestProductsUrlWithUser() throws Exception {
@@ -31,6 +33,14 @@ class ProductControllerTest {
         mvc
                 .perform(get("/products"))
                 .andExpect(status().isOk());
+    }
+
+    //Wrong cases
+    @Test
+    public void requestProductsUrlWithWrongPassword() throws Exception {
+        mvc
+                .perform(get("/products").with(httpBasic("user", "wrongpassword")))
+                .andExpect(status().isUnauthorized());
     }
 
 
