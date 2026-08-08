@@ -24,11 +24,10 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/products").hasRole("USER")
 				.anyRequest().authenticated()
 			)
-			.httpBasic(Customizer.withDefaults())
-			.formLogin(Customizer.withDefaults());
-
+			.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
 
