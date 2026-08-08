@@ -14,6 +14,10 @@ public class UserAccessDeniedHandler implements AccessDeniedHandler {
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException)
             throws IOException {
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied custom message which I hope shows up in my console");
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setContentType("application/json");
+        response.getWriter().write(
+            "{\"status\":403,\"error\":\"Forbidden\",\"message\":\"Permission denied: You are intending to perform an action allowed only for admin.\"}"
+        );
     }
 }
