@@ -27,7 +27,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, UserAccessDeniedHandler accessDeniedHandler) throws Exception {
 		http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) //Disable CSRF because otherwise errors do not show on my console
 			.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.POST, "/products").hasAnyRole("ADMIN")
