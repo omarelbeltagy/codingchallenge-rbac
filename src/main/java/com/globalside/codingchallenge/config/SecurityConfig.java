@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import com.globalside.codingchallenge.rbac.config.UserAccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -24,17 +25,20 @@ public class SecurityConfig {
     }
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, UserAccessDeniedHandler accessDeniedHandler) throws Exception {
 		http
             .csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/products").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
-			.httpBasic(Customizer.withDefaults());
+			.httpBasic(Customizer.withDefaults())
+            .exceptionHandling(ex -> ex
+                .accessDeniedHandler(accessDeniedHandler)
+            );
 		return http.build();
 	}
 
