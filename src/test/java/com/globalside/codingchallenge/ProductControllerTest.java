@@ -25,5 +25,13 @@ class ProductControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void requestProductsUrlWithAdmin() throws Exception {
+        mvc
+                .perform(get("/products"))
+                .andExpect(status().isOk());
+    }
+
 
 }
